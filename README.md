@@ -43,27 +43,16 @@ export PATH=$PATH:/usr/local/go/bin
     golang.org/x/text/unicode/norm
 
 # Examples
-## English
-* racecar
-* Go hang a salami, I'm a lasagna hog
-* Rats live on no evil star
-* Live on time, emit no evil
-* Mr. Owl ate my metal worm
-* Was it a cat I saw?
-* Dammit I'm Mad
 
-## Spanish / Portuguese
-* DÁBALE ARROZ A LA ZORRA EL ABAD
-* ROMA ME TEM AMOR
-* SOCORRAM-ME, SUBI NO ÔNIBUS EM MARROCOS
-
-## Japanese
-* たけやぶやけた
-* わたしまけましたわ
-* なるとをとるな
-* しなもんぱんもれもんぱんもなし
-* よのなかほかほかなのよ
-* たしかにかした
+| English                              | Spanish / Portuguese                    | Japanese                 |
+|--------------------------------------|-----------------------------------------|--------------------------|
+| racecar                              | DÁBALE ARROZ A LA ZORRA EL ABAD         | たけやぶやけた              |
+| Go hang a salami, I'm a lasagna hog  | ROMA ME TEM AMOR                        | わたしまけましたわ           |
+| Rats live on no evil star            | SOCORRAM-ME, SUBI NO ÔNIBUS EM MARROCOS | なるとをとるな              |
+| Live on time, emit no evil           |                                         | しなもんぱんもれもんぱんもなし |
+| Mr. Owl ate my metal worm            |                                         | よのなかほかほかなのよ        |
+| Was it a cat I saw?                  |                                         | たしかにかした               |
+| Dammit I'm Mad                       |                                         |                           |
 
 # TODO
 * Dockerfile
