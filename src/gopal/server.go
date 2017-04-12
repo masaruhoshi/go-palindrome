@@ -24,39 +24,33 @@ package main
 import(
 	"log"
 	"net/http"
-
-	// Third party packages
-	"gopkg.in/mgo.v2"
-	"pkg/api"
 )
 
 func main() {
-	session, err := mgo.Dial("localhost")
-    if err != nil {
-        panic(err) // Mongodb not responding is a good reason to panic
-    }
-    defer session.Close()
-    session.SetMode(mgo.Monotonic, true)
+	settings := GetSettings()
+
+	dao := NewDao(settings)
+    defer dao.Close()
 
     // Enforce index usage
-    api.EnsureIndex(session)
+    dao.EnsureIndex()
 
-	var routes = api.Routes{
-		api.Route{
-			"GET", "/palindrome", api.PalindromeListHandler(session),
+	var routes = Routes{
+		Route{
+			"GET", "/palindrome", PalindromeListHandler(dao),
 		},
-		api.Route{
-			"POST", "/palindrome", api.PalindromeAddHandler(session),
+		Route{
+			"POST", "/palindrome", PalindromeAddHandler(dao),
 		},
-		api.Route{
-			"GET", "/palindrome/:id", api.PalindromeGetHandler(session),
+		Route{
+			"GET", "/palindrome/:id", PalindromeGetHandler(dao),
 		},
-		api.Route{
-			"DELETE", "/palindrome/:id", api.PalindromeDeleteHandler(session),
+		Route{
+			"DELETE", "/palindrome/:id", PalindromeDeleteHandler(dao),
 		},
 	}
 
-	router := api.NewRouter(routes)
+	router := NewRouter(routes)
 
-    log.Fatal(http.ListenAndServe(":8080", router))
+    log.Fatal(http.ListenAndServe(settings.ServicePort, router))
 }

@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package api
+package main
 
 import(
 	"encoding/json"
@@ -25,67 +25,44 @@ import(
 	"github.com/julienschmidt/httprouter"
 	"gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
-
-	// application modules
-	"pkg/models"
-	"pkg/utils"
 )
 
-func EnsureIndex(s *mgo.Session) {
-	session := s.Copy()
-	defer session.Close()
+func PalindromeListHandler(dao *Dao) func(w http.ResponseWriter, _ *http.Request, _ httprouter.Params) {
+	return func(w http.ResponseWriter, _ *http.Request, _ httprouter.Params) {
+		instance := dao.GetInstance()
+        defer instance.Close()
+		c := instance.Database().C("palindromes")
 
-	c := session.DB("gopal").C("palindromes")
-
-	index := mgo.Index{
-		Key:        []string{"phrase"},
-		Unique:     true,
-		DropDups:   true,
-		Background: true,
-		Sparse:     true,
-	}
-	err := c.EnsureIndex(index)
-	if err != nil {
-		panic(err)
-	}
-}
-
-func PalindromeListHandler(s *mgo.Session) func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
-	return func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
-		session := s.Copy()
-        defer session.Close()
-		c := session.DB("gopal").C("palindromes")
-
-		var palindromes []models.Palindrome
+		var palindromes []Palindrome
 		err := c.Find(bson.M{}).All(&palindromes)
 		if err != nil {
-			utils.JSONError(w, "Database error", http.StatusInternalServerError)
+			JSONError(w, "Database error", http.StatusInternalServerError)
 			log.Println("[palindromes] List fail: ", err)
 			return
 		}
 
-		utils.JSONResponse(w, palindromes, http.StatusOK)
+		JSONResponse(w, palindromes, http.StatusOK)
 	}
 }
 
-func PalindromeAddHandler(s *mgo.Session) func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+func PalindromeAddHandler(dao *Dao) func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	return func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
-		var palindrome models.Palindrome
+		var palindrome Palindrome
 		decoder := json.NewDecoder(r.Body)
 		err := decoder.Decode(&palindrome)
 		if err != nil {
-			utils.JSONError(w, "Invalid request", http.StatusBadRequest)
+			JSONError(w, "Invalid request", http.StatusBadRequest)
 			log.Println("[palindromes] Invalid request: ", err)
 			return
 		}
 
-		session := s.Copy()
-        defer session.Close()
-		c := session.DB("gopal").C("palindromes")
+		instance := dao.GetInstance()
+        defer instance.Close()
+		c := instance.Database().C("palindromes")
 
 		err = palindrome.Validate()
 		if err != nil {
-			utils.JSONError(w, "Invalid palindrome", http.StatusBadRequest)
+			JSONError(w, "Invalid palindrome", http.StatusBadRequest)
 			log.Println("[palindromes] Validation: ", err)
 			return
 		}
@@ -93,12 +70,12 @@ func PalindromeAddHandler(s *mgo.Session) func(w http.ResponseWriter, r *http.Re
 		err = c.Insert(palindrome)
 		if err != nil {
 			if mgo.IsDup(err) {
-				utils.JSONError(w, "Palindrome already exists", http.StatusBadRequest)
+				JSONError(w, "Palindrome already exists", http.StatusAlreadyReported)
 				log.Println("[palindromes] Duplicate: ", err)
 				return
 			}
 
-			utils.JSONError(w, "Database error", http.StatusInternalServerError)
+			JSONError(w, "Database error", http.StatusInternalServerError)
 			log.Println("[palindromes] Failed insert: ", err)
 			return
 		}
@@ -107,47 +84,47 @@ func PalindromeAddHandler(s *mgo.Session) func(w http.ResponseWriter, r *http.Re
 	}
 }
 
-func PalindromeGetHandler(s *mgo.Session) func(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
+func PalindromeGetHandler(dao *Dao) func(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
 	return func(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
         id := p.ByName("id")
         if !bson.IsObjectIdHex(id) {
-        	utils.JSONError(w, "Invalid id", http.StatusNotFound)
+        	JSONError(w, "Invalid id", http.StatusPreconditionFailed)
         	log.Println("[palindrome] Invalid id: ", id)
         	return
         }
 
-		session := s.Copy()
-        defer session.Close()
-		c := session.DB("gopal").C("palindromes")
+		instance := dao.GetInstance()
+        defer instance.Close()
+		c := instance.Database().C("palindromes")
 
-		var palindrome models.Palindrome
+		var palindrome Palindrome
 		err := c.FindId(bson.ObjectIdHex(id)).One(&palindrome)
 		if err != nil {
 			switch err {
 			default:
-				utils.JSONError(w, "Database error", http.StatusInternalServerError)
+				JSONError(w, "Database error", http.StatusInternalServerError)
 				log.Println("[palindrome] Failed get: ", err)
 				return
 			case mgo.ErrNotFound:
-				utils.JSONError(w, "Palindrome not found", http.StatusNotFound)
+				JSONError(w, "Palindrome not found", http.StatusNotFound)
 				log.Println("[palindrome] Not found: ", err)
 				return
 			}
 		}
 
-		utils.JSONResponse(w, palindrome, http.StatusOK)
+		JSONResponse(w, palindrome, http.StatusOK)
 	}
 }
 
-func PalindromeDeleteHandler(s *mgo.Session) func(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
+func PalindromeDeleteHandler(dao *Dao) func(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
 	return func(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
-		session := s.Copy()
-		defer session.Close()
-		c := session.DB("gopal").C("palindromes")
+		instance := dao.GetInstance()
+		defer instance.Close()
+		c := instance.Database().C("palindromes")
 
         id := p.ByName("id")
         if !bson.IsObjectIdHex(id) {
-        	utils.JSONError(w, "Invalid id", http.StatusNotFound)
+        	JSONError(w, "Invalid id", http.StatusPreconditionFailed)
         	log.Println("[palindrome] Invalid id: ", id)
         	return
         }
@@ -156,17 +133,17 @@ func PalindromeDeleteHandler(s *mgo.Session) func(w http.ResponseWriter, r *http
 		if err != nil {
 			switch err {
 			default:
-				utils.JSONError(w, "Database error", http.StatusInternalServerError)
+				JSONError(w, "Database error", http.StatusInternalServerError)
 				log.Println("[palindrome] Failed delete: ", err)
 				return
 			case mgo.ErrNotFound:
-				utils.JSONError(w, "Palindrome not found", http.StatusNotFound)
+				JSONError(w, "Palindrome not found", http.StatusNotFound)
 				log.Println("[palindrome] Not found: ", err)
 				return
 			}
 		}
 
-		w.WriteHeader(http.StatusNoContent)
+		w.WriteHeader(http.StatusAccepted)
 	}
 }
 

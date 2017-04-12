@@ -27,7 +27,7 @@ This package is only used to keep routing attributions out of command
 line application.
 */
 
-package api
+package main
 
 import (
 	// Third party packages

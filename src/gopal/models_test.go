@@ -1,9 +1,7 @@
-package models
+package main
 
 import (
 	"testing"
-
-	"pkg/utils"
 )
 
 func TestCleanStringToReturnOnlyCharactersInLowercase(t *testing.T) {
@@ -11,7 +9,7 @@ func TestCleanStringToReturnOnlyCharactersInLowercase(t *testing.T) {
 	expected := "gohangasalamiimalasagnahog"
 
 	actual := cleanString(phrase)
-	utils.Expect(t, actual, expected)
+	Expect(t, actual, expected)
 }
 
 func TestCleanStringToReturnCleanedJapaneseCharacters(t *testing.T) {
@@ -19,7 +17,7 @@ func TestCleanStringToReturnCleanedJapaneseCharacters(t *testing.T) {
 	expected := "たけやふやけた"
 
 	actual := cleanString(phrase)
-	utils.Expect(t, actual, expected)
+	Expect(t, actual, expected)
 }
 
 func TestCleanStringToReturnCleanedAccentCharacters(t *testing.T) {
@@ -27,7 +25,7 @@ func TestCleanStringToReturnCleanedAccentCharacters(t *testing.T) {
 	expected := "whoknowswhathorrorslieinthedarkheartofunicode"
 
 	actual := cleanString(phrase)
-	utils.Expect(t, actual, expected)
+	Expect(t, actual, expected)
 }
 
 func TestValidateAssertsPalindromes(t *testing.T) {
@@ -57,7 +55,7 @@ func TestValidateAssertsPalindromes(t *testing.T) {
 		palindrome = Palindrome{Phrase: phrase}
 		palindrome.Validate()
 
-		utils.Expect(t, palindrome.Valid, true)
+		Expect(t, palindrome.Valid, true)
 	}
 }
 
@@ -75,6 +73,6 @@ func TestValidateRefutePalindromes(t *testing.T) {
 		palindrome = Palindrome{Phrase: phrase}
 		palindrome.Validate()
 
-		utils.Expect(t, palindrome.Valid, false)
+		Expect(t, palindrome.Valid, false)
 	}
 }

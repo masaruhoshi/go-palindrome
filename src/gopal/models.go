@@ -57,7 +57,7 @@ text/transform and text/unicode/norm packages.
 [1] https://en.wikipedia.org/wiki/Palindrome
 */
 
-package models
+package main
 
 import (
 	"errors"
