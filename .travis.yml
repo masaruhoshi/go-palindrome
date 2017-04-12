@@ -4,7 +4,7 @@ notifications:
     on_success: never
     on_failure: change
 go:
-  - tip
+  - master
 before_install:
   - go get github.com/julienschmidt/httprouter
   - go get gopkg.in/mgo.v2

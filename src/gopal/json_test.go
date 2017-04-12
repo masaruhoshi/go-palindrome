@@ -24,8 +24,8 @@ func TestJSONErrorToReturnJSONMessage(t *testing.T) {
 
 func TestJSONResponseToReturnJSONMessage(t *testing.T) {
 	type testData struct {
-		Name	string 	`json:"name"`
-		Age		int 	`json:"age"`
+		Name	string	`json:"name"`
+		Age		int		`json:"age"`
 	}
 
 	data := testData{Name: "Gandalf the Grey", Age: 2019}

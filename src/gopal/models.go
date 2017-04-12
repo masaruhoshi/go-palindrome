@@ -5,7 +5,7 @@ Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 
 You may obtain a copy of the License at
-     http://www.apache.org/licenses/LICENSE-2.0
+	 http://www.apache.org/licenses/LICENSE-2.0
 
 Unless required by applicable law or agreed to in writing, software
 distributed under the License is distributed on an "AS IS" BASIS,
@@ -73,9 +73,9 @@ import (
 )
 
 type Palindrome struct {
-	ID      bson.ObjectId `bson:"_id,omitempty"`
+	ID		bson.ObjectId `bson:"_id,omitempty"`
 	Phrase	string	`json:"phrase"`
-	Valid 	bool	`json:"valid"`
+	Valid	bool	`json:"valid"`
 }
 
 /*
@@ -96,21 +96,20 @@ func (p *Palindrome) Validate() error {
 
 	// Compare runes 1st to last position up to middle position
 	for len(word) > 0 {
-	    first, sizeOfFirst := utf8.DecodeRuneInString(word)
-	    if sizeOfFirst == len(word) {
-	        break 
-	    }
-	    last, sizeOfLast := utf8.DecodeLastRuneInString(word)
-	    if first != last {
-	        return nil
-	    }
-	    word = word[sizeOfFirst : len(word)-sizeOfLast]
+		first, sizeOfFirst := utf8.DecodeRuneInString(word)
+		if sizeOfFirst == len(word) {
+			break 
+		}
+		last, sizeOfLast := utf8.DecodeLastRuneInString(word)
+		if first != last {
+			return nil
+		}
+		word = word[sizeOfFirst : len(word)-sizeOfLast]
 	}
 
 	p.Valid = true
 	return nil
 }
-
 
 /*
 Clean up the candidate phrase before validation.
@@ -120,7 +119,7 @@ works, take a look here: https://blog.golang.org/normalization.
 */
 func cleanString(s string) string {
 	f := func(r rune) bool {
-    	return unicode.Is(unicode.Mn, r) // Mn: nonspacing marks
+		return unicode.Is(unicode.Mn, r) // Mn: nonspacing marks
 	}
 
 	// cleans up any punctuation and spaces before the normalization
@@ -128,7 +127,7 @@ func cleanString(s string) string {
 	s = re.ReplaceAllString(strings.ToLower(s), "")
 
  	t := transform.Chain(norm.NFD, transform.RemoveFunc(f), norm.NFC)
-    result, _, _ := transform.String(t, s)
+	result, _, _ := transform.String(t, s)
 
-    return result
+	return result
 }

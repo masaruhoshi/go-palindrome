@@ -30,6 +30,7 @@ require normalizing the string. To achieve we, I decided using the
 text/transform and text/unicode/norm packages.
 
 # Dev
+
 ```
 export GOPATH=$PWD
 export PATH=$PATH:/usr/local/go/bin
@@ -57,9 +58,10 @@ export PATH=$PATH:/usr/local/go/bin
 # TODO
 * Dockerfile
 * Move application settings to its own struct
- * Mongo host and credentials
- * Database and collection names
-* Have database functions to its own package
+ * ~Mongo host and credentials~
+ * ~Database~
+ * Collection names
+* ~Have database functions to its own package~
 
 # Licence
 This project is licensed unter Apache License 2.0. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
