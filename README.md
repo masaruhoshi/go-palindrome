@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/masaruhoshi/go-palindrome.svg?branch=master)](https://travis-ci.org/masaruhoshi/go-palindrome)
+[![Build Status](https://travis-ci.org/masaruhoshi/go-palindrome.svg?branch=master)](https://travis-ci.org/masaruhoshi/go-palindrome) [![Coverage Status](https://coveralls.io/repos/github/masaruhoshi/go-palindrome/badge.svg?branch=master)](https://coveralls.io/github/masaruhoshi/go-palindrome?branch=master)
 
 Palindromes are word, phrases, numbers, or other sequence of characters 
 which reads the same backward as forward ([https://en.wikipedia.org/wiki/Palindrome]).
