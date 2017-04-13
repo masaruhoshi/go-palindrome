@@ -36,7 +36,7 @@ unnormalized strings, evaluating palindromes in different languages
 require normalizing the string. To achieve we, I decided using the 
 text/transform and text/unicode/norm packages.
 
-# Examples
+### Examples
 
 | English                              | Spanish / Portuguese                    | Japanese                 |
 |--------------------------------------|-----------------------------------------|--------------------------|
@@ -87,7 +87,7 @@ The JSON Schema above can be used to test the validity of the JSON code below:
 
 ## Endpoints
 
-1. `GET /palindrome/`
+### `GET /palindrome/`
 
 List all palindromes entered
 
@@ -108,7 +108,7 @@ List all palindromes entered
 *Alternative responses*:
 * `null`: In case there're no records
 
-2. `POST /palindrome/`
+### `POST /palindrome/`
 
 Add a new palindrome phrase to be validated.
 
@@ -130,7 +130,7 @@ Add a new palindrome phrase to be validated.
 * `HTTP/1.1 208 Already Reported`: When the palindrome was already provided
 * `HTTP/1.1 500 Internal Server Error`: The database server must be down
 
-3. `GET /palindrome/:id`
+### `GET /palindrome/:id`
 
 Display details about a specific palindrome
 
@@ -151,7 +151,7 @@ Display details about a specific palindrome
 2. `HTTP/1.1 404 Not Found`: There's not palindrome for the ID specified
 3. `HTTP/1.1 500 Internal Server Error`: The database must be down.
 
-4. `DELETE /palindrome/:id`
+### `DELETE /palindrome/:id`
 
 Deletes a given palindrome from its `id`
 
@@ -182,11 +182,9 @@ export PATH=$PATH:/usr/local/go/bin
 
 ## Dependencies
 
-* [https://github.com/julienschmidt/httprouter](HTTPRouter): lightweight router in Go
-* [https://github.com/go-mgo/mgo](MGO): Mongo driver for Go
-* [https://golang.org/x/text/transform](Transform) and [https://golang.org/x/text/unicode/norm](Norm): Normalization unicode characters
-
-
+* [HTTPRouter](https://github.com/julienschmidt/httprouter): lightweight router in `go`
+* [MGO](https://github.com/go-mgo/mgo): Mongo driver for `go`
+* [Transform](https://golang.org/x/text/transform) and [Norm](https://golang.org/x/text/unicode/norm): Normalization unicode characters
 
 # TODO
 * ~Dockerfile~
