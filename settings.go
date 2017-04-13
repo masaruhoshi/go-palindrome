@@ -17,8 +17,6 @@ limitations under the License.
 package main
 
 type Settings struct {
-	// In which port this service is running
-	ServicePort string
 	// Host name / address
 	HostName string
 	// database name
@@ -27,7 +25,6 @@ type Settings struct {
 
 func GetSettings() Settings {
 	return Settings {
-		ServicePort: ":8080",
 		HostName: "localhost",
 		DbName: "gopal",
 	}

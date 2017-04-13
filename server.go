@@ -21,6 +21,8 @@ import(
 	"net/http"
 )
 
+const SERVICE_PORT string = "80"
+
 func main() {
 	settings := GetSettings()
 
@@ -47,5 +49,5 @@ func main() {
 
 	router := NewRouter(routes)
 
-	log.Fatal(http.ListenAndServe(settings.ServicePort, router))
+	log.Fatal(http.ListenAndServe(":"+SERVICE_PORT, router))
 }
