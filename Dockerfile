@@ -5,6 +5,9 @@ FROM golang:alpine
 # Copy the local package files to the container's workspace.
 ADD . /go/src/github.com/masaruhoshi/go-palindrome
 
+# Add workdir
+WORKDIR /go/src/github.com/masaruhoshi/go-palindrome
+
 # Get dependency packages
 RUN go-wrapper download
 RUN go-wrapper install
