@@ -4,13 +4,16 @@ FROM golang:alpine
 
 # Copy the remote source files to the container's workspace.
 RUN mkdir -p /go/src
+# This is for mongodb. Can be mapped to local mongo data if required
+RUN mkdir -p /data/db
 
 # Add workdir
 WORKDIR /go/src
 
 # Get dependency packages
-## git doesn't come in alpine. This is a workaround to make it work with go-wrapper
-RUN apk add --no-cache git mercurial supervisor && \
+## git, supervisor and mongo don't come in alpine. 
+RUN echo http://dl-4.alpinelinux.org/alpine/edge/testing >> /etc/apk/repositories && \
+	apk add --no-cache git mercurial supervisor mongodb && \
 	# Clone source code repo
 	git clone https://github.com/masaruhoshi/go-palindrome.git
 

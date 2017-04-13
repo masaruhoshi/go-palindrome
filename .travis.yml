@@ -25,5 +25,6 @@ deploy:
   region: us-east-1
   app: gopal
   env: LowCost-env
+  skip_cleanup: true
   on:
     repo: masaruhoshi/go-palindrome
