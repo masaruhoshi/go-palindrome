@@ -4,16 +4,26 @@ notifications:
     on_success: never
     on_failure: change
 go:
-  - master
+- master
 services:
-  - mongodb
+- mongodb
 before_install:
-  - go get github.com/julienschmidt/httprouter
-  - go get gopkg.in/mgo.v2
-  - go get golang.org/x/text/transform
-  - go get golang.org/x/text/unicode/norm
-  - go get github.com/mattn/goveralls
-  - go get golang.org/x/tools/cmd/cover
-script: 
-  - go test ./
-  - $HOME/gopath/bin/goveralls -service=travis-ci
+- go get github.com/julienschmidt/httprouter
+- go get gopkg.in/mgo.v2
+- go get golang.org/x/text/transform
+- go get golang.org/x/text/unicode/norm
+- go get github.com/mattn/goveralls
+- go get golang.org/x/tools/cmd/cover
+script:
+- go test ./
+- $HOME/gopath/bin/goveralls -service=travis-ci
+deploy:
+  provider: elasticbeanstalk
+  access_key_id: AKIAIAMNNXTSMMPL6KWQ
+  secret_access_key:
+    secure: bRmfEZU0Kn7d9kehF4LkjXs1Xs7vSbBI8ydtcfE1aP62gTDAAtNKhmWYGIZmkx1UT5RmxNVzg5NBD2KB3PijR1YxCw3nndrOCkKWrkXrVyVYcXvKur6SkAaCZcMPm0JoLaemd0ATxPlcQ1kT68O1oxu2Kqq6fPxFJJe6J1sDhNUkGTnEmZOm07peX6fExTaGFwd+fy9D8MOl6nWjT4rON3UM29Ba3gXIXcLY/WfXpPPwU8DZCevl5+SJ2luJJGfEynR6HhnJX4+XdZiWVElhJ6RGIDSzv1jy2p2gpj6ccjVNg7wVDNZB0Y4G2t4ukNb6OHuGsksJvgWt7XK5nR/QUkaR8QFslbVS8x7tZpH22HsJNb+pmqMnng5JCzdLUBETfyon+e2e1e8YNfYL8IgHdnJ2t9JN8g552MqBows4K+dFOs9AYAh9IFZoctr7fHvFcNpdvHg2xtPEYFzL3R0IQgXwMZEBnrmC6DBroHl2XlT/ohG8eufEgCflnF1kkaloP9tSmgrbB44PB9zWHynfcV/NRsm0VSJuACxxmqM3w28L+i0b00wezOtYeTTyc74bFUijumUEOzmI7/FuNIGNCx2BDtA/Md+1/gEWv951lC3dPazG2a/oYXGVs82zwjIPxkivy4PrWQD5mS1iELYcCFEQItxQFrhProUESvuNUig=
+  region: us-east-1
+  app: gopal
+  env: LowCost-env
+  on:
+    repo: masaruhoshi/go-palindrome
