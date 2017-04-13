@@ -34,7 +34,7 @@ RUN go-wrapper download && \
 ENV PATH="/go/bin:${PATH}"
 
 # Document that the service listens on port 80.
-EXPOSE 8080 27017
+EXPOSE 80 27017
 
 # Run supervisor 
 ENTRYPOINT ["/usr/bin/supervisord", "-c", "/go/src/go-palindrome/supervisor.conf"]

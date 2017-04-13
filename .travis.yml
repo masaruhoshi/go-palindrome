@@ -26,5 +26,6 @@ deploy:
   app: gopal
   env: LowCost-env
   skip_cleanup: true
+  bucket_name: elasticbeanstalk-us-west-2-485856970073
   on:
     repo: masaruhoshi/go-palindrome
