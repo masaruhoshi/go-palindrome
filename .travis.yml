@@ -5,6 +5,8 @@ notifications:
     on_failure: change
 go:
   - master
+services:
+  - mongodb
 before_install:
   - go get github.com/julienschmidt/httprouter
   - go get gopkg.in/mgo.v2
