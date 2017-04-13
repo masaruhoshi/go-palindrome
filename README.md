@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/masaruhoshi/go-palindrome.svg?branch=master)](https://travis-ci.org/masaruhoshi/go-palindrome)
+
 Palindromes are word, phrases, numbers, or other sequence of characters 
 which reads the same backward as forward ([https://en.wikipedia.org/wiki/Palindrome]).
 
