@@ -12,4 +12,4 @@ before_install:
   - go get golang.org/x/text/unicode/norm
   - go get github.com/mattn/goveralls
   - go get golang.org/x/tools/cmd/cover
-script: go test gopal
+script: go test ./
