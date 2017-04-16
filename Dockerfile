@@ -36,4 +36,4 @@ ENV PATH="/go/bin:${PATH}"
 EXPOSE 80 27017
 
 # Run supervisor 
-ENTRYPOINT ["/usr/bin/supervisord", "-c", "/go/src/go-palindrome/supervisor.conf"]
+ENTRYPOINT ["/usr/bin/supervisord", "-c", "/go/src/go-palindrome/conf/supervisor.conf"]

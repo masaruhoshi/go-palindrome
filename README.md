@@ -53,7 +53,7 @@ text/transform and text/unicode/norm packages.
 
 - `go` 1.4+
 - `MongoDB`
-- `curl` or any REST client (I recommend [https://advancedrestclient.com/] Advanced REST Client)
+- `curl` or any REST client (I recommend [https://advancedrestclient.com/](Advanced REST Client) )
 
 ## Development
 
