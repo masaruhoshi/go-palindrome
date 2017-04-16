@@ -48,11 +48,74 @@ text/transform and text/unicode/norm packages.
 | Was it a cat I saw?                  |                                         | たしかにかした               |
 | Dammit I'm Mad                       |                                         |                           |
 
+
 ## Requirements
 
 - `go` 1.4+
 - `MongoDB`
 - `curl` or any REST client (I recommend [https://advancedrestclient.com/] Advanced REST Client)
+
+## Development
+
+### Preparing the environment
+
+I strongly recommend using a Docker container for development. It may simplify a lot the 
+development process. I created a `Dockerfile.dev` I used for development. You can build it doing 
+the following:
+
+```
+    $ docker build --rm --squash -t gopal:dev -f Dockerfile.dev .
+```
+
+There are two things you need to consider to run this application. `gopal` runs under port 80 and 
+this image is already exposing it. However, you need to map it to your host. You may also want to 
+mount the source code into the running container so you can still develop locally. You may do both
+things with this command:
+
+```
+    $ docker run --rm -p 80:80 -v /gopal/source:/go/src -it gopal:dev
+```
+
+The container entrypoint is a `bash` instance under `/go` path. The source is mounted under `./src`
+and the host machine is listening to port 80. There's a chance your host may already have a web
+server running and you may have problems with that. If it's your case, change the mapping port to
+something else like this `-p 8080:80`. 
+
+MongoDb isn't running either. So, make sure you have it up every time you run the container
+
+```
+    $ /etc/init.d/mongodb start
+```
+
+Also, the first time you run `gopal` you have to get its dependencies satisfied. Inside the running
+container, make sure you execute  `go-wrapper download` to install the dependencies.
+
+### Dependencies
+
+* [HTTPRouter](https://github.com/julienschmidt/httprouter): lightweight router in `go`
+* [MGO](https://github.com/go-mgo/mgo): Mongo driver for `go`
+* [Transform](https://golang.org/x/text/transform) and [Norm](https://golang.org/x/text/unicode/norm): Normalization unicode characters
+
+## Building and running
+
+`golang` has a `run` command. It's essentially an alias to `go build` that executes the binary
+file and then gets rid of it at the end of the execution. I don't recommend doing using `run`
+as you avoid having to manually specify every file you need to run. `gopal` as it's a pretty lightweight and simple application that can be built in seconds.
+
+```
+    $ go build -o gopal && ./gopal
+```
+
+## Testing
+
+Use the usual `go test` to run application tests. If everything is fine you should get a result
+like this:
+
+```
+    $ go test
+    PASS
+    ok      _/go/src    0.046s
+```
 
 ## JSON Schema
 
@@ -171,28 +234,6 @@ Deletes a given palindrome from its `id`
 2. `HTTP/1.1 404 Not Found`: There's not palindrome for the ID specified
 3. `HTTP/1.1 500 Internal Server Error`: The database must be down.
 
-## Development
-
-I strongly recommend using a docker container for development
-
-```
-export GOPATH=$PWD
-export PATH=$PATH:/usr/local/go/bin
-```
-
-## Dependencies
-
-* [HTTPRouter](https://github.com/julienschmidt/httprouter): lightweight router in `go`
-* [MGO](https://github.com/go-mgo/mgo): Mongo driver for `go`
-* [Transform](https://golang.org/x/text/transform) and [Norm](https://golang.org/x/text/unicode/norm): Normalization unicode characters
-
-# TODO
-* ~Dockerfile~
-* Move application settings to its own struct
-* ~Mongo host and credentials~
-  * ~Database~
-  * Collection names
-* ~Have database functions to its own package~
 
 # Licence
 This project is licensed unter Apache License 2.0. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0

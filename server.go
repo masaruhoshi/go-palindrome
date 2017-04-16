@@ -49,5 +49,6 @@ func main() {
 
 	router := NewRouter(routes)
 
+	log.Println("gopal is running under port "+SERVICE_PORT)
 	log.Fatal(http.ListenAndServe(":"+SERVICE_PORT, router))
 }

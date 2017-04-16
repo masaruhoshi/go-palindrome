@@ -56,16 +56,16 @@ func PalindromeAddHandler(dao *Dao) func(w http.ResponseWriter, r *http.Request,
 			return
 		}
 
-		instance := dao.GetInstance()
-        defer instance.Close()
-		c := instance.Database().C("palindromes")
-
 		err = palindrome.Validate()
 		if err != nil {
 			JSONError(w, "Invalid palindrome", http.StatusBadRequest)
 			log.Println("[palindromes] Validation: ", err)
 			return
 		}
+
+		instance := dao.GetInstance()
+        defer instance.Close()
+		c := instance.Database().C("palindromes")
 
 		err = c.Insert(palindrome)
 		if err != nil {
@@ -118,16 +118,16 @@ func PalindromeGetHandler(dao *Dao) func(w http.ResponseWriter, r *http.Request,
 
 func PalindromeDeleteHandler(dao *Dao) func(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
 	return func(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
-		instance := dao.GetInstance()
-		defer instance.Close()
-		c := instance.Database().C("palindromes")
-
         id := p.ByName("id")
         if !bson.IsObjectIdHex(id) {
         	JSONError(w, "Invalid id", http.StatusPreconditionFailed)
         	log.Println("[palindrome] Invalid id: ", id)
         	return
         }
+
+		instance := dao.GetInstance()
+		defer instance.Close()
+		c := instance.Database().C("palindromes")
 
 		err := c.RemoveId(bson.ObjectIdHex(id))
 		if err != nil {

@@ -1,0 +1,17 @@
+# Start from a Debian image with the latest version of Go installed
+# and a workspace (GOPATH) configured at /go.
+FROM golang:latest
+
+# Get dependency packages
+## git, supervisor and mongo don't come in alpine. 
+RUN apt-get update && \
+	apt-get install -y --no-install-recommends mongodb && \
+	rm -rf /var/lib/apt/lists/*
+
+# Update path to include the service
+ENV PATH="${PATH}:/go/bin:/usr/local/go/bin"
+
+# Document that the service listens on port 80.
+EXPOSE 80 27017
+
+ENTRYPOINT ["/bin/bash"]

@@ -22,7 +22,6 @@ WORKDIR go-palindrome
 
 # Install dependencies
 RUN go-wrapper download && \
-	go-wrapper install && \
 	# Get rid of git at the end
 	apk del git mercurial && \
 	# Build the app inside the container.
