@@ -58,16 +58,16 @@ text/transform and text/unicode/norm packages.
 ## Sequence diagrams
 
 *Add palindrome*
-[(https://github.com/masaruhoshi/go-palindrome/blob/master/diagrams/add.png)
+(https://raw.githubusercontent.com/masaruhoshi/go-palindrome/master/diagrams/add.png)
 
 *List all palindrome*
-[(https://github.com/masaruhoshi/go-palindrome/blob/master/diagrams/list-all.png)
+(https://raw.githubusercontent.com/masaruhoshi/go-palindrome/master/diagrams/list-all.png)
 
 *Get palindrome*
-[(https://github.com/masaruhoshi/go-palindrome/blob/master/diagrams/get.png)
+(https://raw.githubusercontent.com/masaruhoshi/go-palindrome/master/diagrams/get.png)
 
 *Delete palindrome*
-[(https://github.com/masaruhoshi/go-palindrome/blob/master/diagrams/delete.png)
+(https://raw.githubusercontent.com/masaruhoshi/go-palindrome/master/diagrams/delete.png)
 
 
 
