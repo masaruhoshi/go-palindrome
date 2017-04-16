@@ -3,6 +3,26 @@
 `GoPal` is a simple set of REST apis built on [http://golang.org](Go) used to validate 
 sets of words, numbers or phrases as palindromes.
 
+  * [Palindromes](#palindromes)
+     * [Character normalization](#character-normalization)
+     * [Normalization](#normalization)
+     * [Examples](#examples)
+  * [Requirements](#requirements)
+  * [Sequence diagrams](#sequence-diagrams)
+  * [Development](#development)
+     * [Preparing the environment](#preparing-the-environment)
+     * [Dependencies](#dependencies)
+  * [Building and running](#building-and-running)
+  * [Testing](#testing)
+  * [JSON Schema](#json-schema)
+  * [Endpoints](#endpoints)
+     * [GET /palindrome/](#get-palindrome)
+     * [POST /palindrome/](#post-palindrome)
+     * [GET /palindrome/:id](#get-palindromeid)
+     * [DELETE /palindrome/:id](#delete-palindromeid)
+  * [Licence](#licence)
+
+
 ## Palindromes
 
 Palindromes are word, phrases, numbers, or other sequence of characters 
@@ -72,7 +92,6 @@ text/transform and text/unicode/norm packages.
 *Delete palindrome*
 
 ![Delete palindrome](https://raw.githubusercontent.com/masaruhoshi/go-palindrome/master/diagrams/delete.png)
-
 
 
 ## Development
