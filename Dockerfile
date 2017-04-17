@@ -2,10 +2,10 @@
 # and a workspace (GOPATH) configured at /go.
 FROM golang:alpine
 
-# Copy the remote source files to the container's workspace.
-RUN mkdir -p /go/src
-# This is for mongodb. Can be mapped to local mongo data if required
-RUN mkdir -p /data/db
+# Directory for source files
+RUN mkdir -p /go/src && \
+	# This is for mongodb. Can be mapped to local mongo data if required
+	mkdir -p /data/db
 
 # Add workdir
 WORKDIR /go/src
@@ -28,9 +28,6 @@ RUN go-wrapper download && \
 	go install go-palindrome && \
 	# Clean up 
 	rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
-
-# Update path to include the service
-ENV PATH="/go/bin:${PATH}"
 
 # Document that the service listens on port 80.
 EXPOSE 80 27017
