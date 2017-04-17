@@ -16,39 +16,7 @@ limitations under the License.
 
 package main
 
-import(
-	"log"
-	"net/http"
-)
-
-const SERVICE_PORT string = "80"
-
 func main() {
-	settings := GetSettings()
-
-	dao := NewDao(settings)
-	defer dao.Close()
-
-	// Enforce index usage
-	dao.EnsureIndex()
-
-	var routes = Routes{
-		Route{
-			"GET", "/palindrome", PalindromeListHandler(dao),
-		},
-		Route{
-			"POST", "/palindrome", PalindromeAddHandler(dao),
-		},
-		Route{
-			"GET", "/palindrome/:id", PalindromeGetHandler(dao),
-		},
-		Route{
-			"DELETE", "/palindrome/:id", PalindromeDeleteHandler(dao),
-		},
-	}
-
-	router := NewRouter(routes)
-
-	log.Println("gopal is running under port "+SERVICE_PORT)
-	log.Fatal(http.ListenAndServe(":"+SERVICE_PORT, router))
+	g := New()
+	g.Run()
 }
