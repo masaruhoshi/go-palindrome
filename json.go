@@ -35,11 +35,7 @@ Message is assigned to erroMsg type along with error code and
 marshalled into JSON instance.
 */
 func JSONError(w http.ResponseWriter, message string, code int) {
-	resp, err := json.Marshal(errorMsg{code, message})
-	if err != nil {
-		// If this is called, something really bad happened
-		log.Fatal(err)
-	}
+	resp, _ := json.Marshal(errorMsg{code, message})
 
 	w.Header().Set("Content-Type", "application/json; charset=utf-8")
 	w.WriteHeader(code)
@@ -56,7 +52,7 @@ func JSONResponse(w http.ResponseWriter, v interface{}, code int) {
 	resp, err := json.MarshalIndent(v, "", "  ")
 	if err != nil {
 		// Again, if this happens, something really bad happened
-		log.Fatal(err)
+		log.Println("JSONResponse fail: ",err)
 	}
 
 	w.Header().Set("Content-Type", "application/json; charset=utf-8")

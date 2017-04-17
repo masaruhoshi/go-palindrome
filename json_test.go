@@ -43,3 +43,19 @@ func TestJSONResponseToReturnJSONMessage(t *testing.T) {
 	Expect(t, res.Header().Get("Content-Type"), "application/json; charset=utf-8")
 	Expect(t, res.Body.String(), string(expected))
 }
+
+func TestJSONResponseToReturnNilOnInvalidMarshal(t *testing.T) {
+	h := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		val := func() {}
+		JSONResponse(w, val, http.StatusInternalServerError)
+	})
+
+	res := httptest.NewRecorder()
+	req, _ := http.NewRequest("GET", "/foo", nil)
+	h.ServeHTTP(res, req)
+
+	Expect(t, res.Code, http.StatusInternalServerError)
+	Expect(t, res.Header().Get("Content-Type"), "application/json; charset=utf-8")
+	Expect(t, res.Body.String(), "")
+}
+

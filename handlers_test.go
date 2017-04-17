@@ -101,6 +101,35 @@ func TestPalindromeAddHandlerToReturnBadRequestOnInvalidRequest(t *testing.T) {
 	})
 }
 
+func TestPalindromeAddHandlerToReturnBadRequestOnInvalidPhrase(t *testing.T) {
+	ht := new(HandlerTest)
+	ht.SetupTest( func() {
+		session := ht.Session
+
+		var jsonStr = []byte(`{"phrase": ""}`)
+
+		// Create a request to pass to handler. Parameters are not required
+		r, err := http.NewRequest("POST", "/palindrome", bytes.NewBuffer(jsonStr))
+		if err != nil {
+        	t.Fatal(err)
+    	}
+		r.Header.Set("Content-Type", "application/json")
+
+		// Create a ResponseRecorder (which satisfies http.ResponseWriter) to record the response.
+		rr := httptest.NewRecorder()
+		handler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			addHandler := PalindromeAddHandler(session)
+			addHandler(w, r, nil)
+		})
+
+		// `handler` satisfies http.Handler, so ServeHTTP method is called directly 
+		handler.ServeHTTP(rr, r)
+
+		// Status should be OK
+		Expect(t, rr.Code, http.StatusBadRequest)
+	})
+}
+
 func TestPalindromeAddHandlerToReturnBadRequestOnEmptyRequest(t *testing.T) {
 	ht := new(HandlerTest)
 	ht.SetupTest( func() {
@@ -164,6 +193,43 @@ func TestPalindromeAddHandlerToReturnAlreadyReportedOnExistingPhrase(t *testing.
 		// Status should be OK
 		Expect(t, rr.Code, http.StatusAlreadyReported)
 	})
+}
+
+func TestPalindromeGetHandlerToReturnValidObject(t *testing.T) {
+	ht := new(HandlerTest)
+	ht.SetupTest( func() {
+		session := ht.Session
+
+		// Get random id from list of entries
+		randomId := getRandomIdEntry(ht)
+
+		params := httprouter.Params{
+			httprouter.Param{
+				Key: "id",
+				Value: randomId,
+			},
+		}
+
+		// Create a request to pass to handler. Parameters are not required
+		r, err := http.NewRequest("GET", fmt.Sprintf("/palindrome/%s", randomId), nil)
+		if err != nil {
+        	t.Fatal(err)
+    	}
+
+		// Create a ResponseRecorder (which satisfies http.ResponseWriter) to record the response.
+		rr := httptest.NewRecorder()
+		handler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			getHandler := PalindromeGetHandler(session)
+			getHandler(w, r, params)
+		})
+
+		// `handler` satisfies http.Handler, so ServeHTTP method is called directly 
+		handler.ServeHTTP(rr, r)
+
+		// Status should be OK
+		Expect(t, rr.Code, http.StatusOK)
+
+	})	
 }
 
 func TestPalindromeGetHandlerToReturn404WithNonExistingId(t *testing.T) {
@@ -307,12 +373,8 @@ func TestPalindromeDeleteHandlerToReturnAccepted(t *testing.T) {
 	ht.SetupTest( func() {
 		session := ht.Session
 
-		// It has to be an easier way to get the first/last element from a map
-		var randomId string
-		for k, _ := range ht.Entries {
-			randomId = k
-			break;
-		}
+		// Get random id from list of entries
+		randomId := getRandomIdEntry(ht)
 
 		params := httprouter.Params{
 			httprouter.Param{
@@ -341,4 +403,16 @@ func TestPalindromeDeleteHandlerToReturnAccepted(t *testing.T) {
 		Expect(t, rr.Code, http.StatusAccepted)
 
 	})	
+}
+
+// It has to be an easier way to get the first/last element from a map
+func getRandomIdEntry(ht *HandlerTest) string {
+	// It has to be an easier way to get the first/last element from a map
+	var randomId string
+	for k, _ := range ht.Entries {
+		randomId = k
+		break;
+	}
+
+	return randomId
 }
