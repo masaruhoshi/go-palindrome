@@ -4,8 +4,6 @@ import (
 	"fmt"
 	"reflect"
 	"testing"
-	"encoding/json"
-	"bytes"
 
 	"gopkg.in/mgo.v2/bson"
 )
