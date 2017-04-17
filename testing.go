@@ -17,12 +17,6 @@ func Expect(t *testing.T, a interface{}, b interface{}) {
 	}
 }
 
-func ExpectNil(t *testing.T, a interface{}) {
-	if a != nil {
-		t.Errorf("Expected ||nil|| - Got ||%#v|| (type %v)", a, reflect.TypeOf(a))
-	}
-}
-
 func ExpectNotNil(t *testing.T, a interface{}) {
 	if a == nil {
 		t.Errorf("Expected ||not nil|| - Got ||nil|| (type %v)", reflect.TypeOf(a))
@@ -65,12 +59,4 @@ func (h *HandlerTest) SetupTest(f func()) {
 func (h *HandlerTest) tearDown() {
 	c := h.Session.Database().C("palindromes")
 	c.RemoveAll(bson.M{})
-}
-
-func (h *HandlerTest) AppendEntry(b *bytes.Buffer) {
-	var palindrome Palindrome
-	decoder := json.NewDecoder(b)
-	decoder.Decode(&palindrome)
-
-	h.Entries[palindrome.ID.Hex()] = palindrome
 }
