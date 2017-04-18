@@ -67,6 +67,9 @@ func PalindromeAddHandler(dao *Dao) func(w http.ResponseWriter, r *http.Request,
 			return
 		}
 
+		// assing id to new palindrome
+		palindrome.ID = bson.NewObjectId()
+
 		instance := dao.GetInstance()
         defer instance.Close()
 		c := instance.Database().C("palindromes")
@@ -84,7 +87,7 @@ func PalindromeAddHandler(dao *Dao) func(w http.ResponseWriter, r *http.Request,
 			return
 		}
 
-		w.WriteHeader(http.StatusCreated)
+		JSONResponse(w, palindrome, http.StatusCreated)
 	}
 }
 
