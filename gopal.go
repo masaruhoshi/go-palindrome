@@ -7,7 +7,7 @@ import (
 	"github.com/julienschmidt/httprouter"
 )
 
-const SERVICE_PORT string = "80"
+const SERVICE_PORT string = "8080"
 
 type GoPal struct {
 	Db *Dao

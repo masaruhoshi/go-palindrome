@@ -30,7 +30,7 @@ RUN go-wrapper download && \
 	rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # Document that the service listens on port 80.
-EXPOSE 80 27017
+EXPOSE 8080
 
 # Run supervisor 
 ENTRYPOINT ["/usr/bin/supervisord", "-c", "/go/src/go-palindrome/conf/supervisor.conf"]
