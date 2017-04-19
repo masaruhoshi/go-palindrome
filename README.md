@@ -134,6 +134,7 @@ container, make sure you execute  `go-wrapper download` to install the dependenc
 * [HTTPRouter](https://github.com/julienschmidt/httprouter): lightweight router in `go`
 * [MGO](https://github.com/go-mgo/mgo): Mongo driver for `go`
 * [Transform](https://golang.org/x/text/transform) and [Norm](https://golang.org/x/text/unicode/norm): Normalization unicode characters
+* [Cors](https://github.com/rs/cors): Handles CORS requests
 
 ## Building and running
 
