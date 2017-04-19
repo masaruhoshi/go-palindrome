@@ -5,7 +5,7 @@ Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 
 You may obtain a copy of the License at
-     http://www.apache.org/licenses/LICENSE-2.0
+	 http://www.apache.org/licenses/LICENSE-2.0
 
 Unless required by applicable law or agreed to in writing, software
 distributed under the License is distributed on an "AS IS" BASIS,
@@ -29,10 +29,8 @@ import(
 
 func PalindromeListHandler(dao *Dao) func(w http.ResponseWriter, _ *http.Request, _ httprouter.Params) {
 	return func(w http.ResponseWriter, _ *http.Request, _ httprouter.Params) {
-		handleCORS(w)
-
 		instance := dao.GetInstance()
-        defer instance.Close()
+		defer instance.Close()
 		c := instance.Database().C("palindromes")
 
 		var palindromes []Palindrome
@@ -49,8 +47,6 @@ func PalindromeListHandler(dao *Dao) func(w http.ResponseWriter, _ *http.Request
 
 func PalindromeAddHandler(dao *Dao) func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	return func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
-		handleCORS(w)
-
 		var palindrome Palindrome
 		decoder := json.NewDecoder(r.Body)
 		err := decoder.Decode(&palindrome)
@@ -71,7 +67,7 @@ func PalindromeAddHandler(dao *Dao) func(w http.ResponseWriter, r *http.Request,
 		palindrome.ID = bson.NewObjectId()
 
 		instance := dao.GetInstance()
-        defer instance.Close()
+		defer instance.Close()
 		c := instance.Database().C("palindromes")
 
 		err = c.Insert(palindrome)
@@ -93,17 +89,15 @@ func PalindromeAddHandler(dao *Dao) func(w http.ResponseWriter, r *http.Request,
 
 func PalindromeGetHandler(dao *Dao) func(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
 	return func(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
-		handleCORS(w)
-
-        id := p.ByName("id")
-        if !bson.IsObjectIdHex(id) {
-        	JSONError(w, "Invalid id", http.StatusPreconditionFailed)
-        	log.Println("[palindrome] Invalid id: ", id)
-        	return
-        }
+		id := p.ByName("id")
+		if !bson.IsObjectIdHex(id) {
+			JSONError(w, "Invalid id", http.StatusPreconditionFailed)
+			log.Println("[palindrome] Invalid id: ", id)
+			return
+		}
 
 		instance := dao.GetInstance()
-        defer instance.Close()
+		defer instance.Close()
 		c := instance.Database().C("palindromes")
 
 		var palindrome Palindrome
@@ -127,14 +121,12 @@ func PalindromeGetHandler(dao *Dao) func(w http.ResponseWriter, r *http.Request,
 
 func PalindromeDeleteHandler(dao *Dao) func(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
 	return func(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
-		handleCORS(w)
-
-        id := p.ByName("id")
-        if !bson.IsObjectIdHex(id) {
-        	JSONError(w, "Invalid id", http.StatusPreconditionFailed)
-        	log.Println("[palindrome] Invalid id: ", id)
-        	return
-        }
+		id := p.ByName("id")
+		if !bson.IsObjectIdHex(id) {
+			JSONError(w, "Invalid id", http.StatusPreconditionFailed)
+			log.Println("[palindrome] Invalid id: ", id)
+			return
+		}
 
 		instance := dao.GetInstance()
 		defer instance.Close()
@@ -156,15 +148,4 @@ func PalindromeDeleteHandler(dao *Dao) func(w http.ResponseWriter, r *http.Reque
 
 		w.WriteHeader(http.StatusAccepted)
 	}
-}
-
-/*
-* Enable CORS - Cross Origin HTTP Request
-* @see https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS
-*/
-func handleCORS(w http.ResponseWriter) {
-	// This is ultra ugly...
-	w.Header().Set("Access-Control-Allow-Origin", "*")
-	// Restrict to methods used here
-	w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE")
 }

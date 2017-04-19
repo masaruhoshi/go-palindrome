@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/julienschmidt/httprouter"
+	"github.com/rs/cors"
 )
 
 const SERVICE_PORT string = "8080"
@@ -48,6 +49,12 @@ func New() *GoPal {
 func (g *GoPal) Run() error {
 	defer g.Db.Close()
 
+	c := cors.New(cors.Options{
+		AllowedOrigins: []string{"*"},
+		AllowedMethods: []string{"GET", "POST", "DELETE", "OPTIONS"},
+		AllowedHeaders: []string{"*"},
+	})
+
 	log.Println("gopal is running under port "+SERVICE_PORT)
-	return http.ListenAndServe(":"+SERVICE_PORT, g.Router)
+	return http.ListenAndServe(":"+SERVICE_PORT, c.Handler(g.Router))
 }
